@@ -18,7 +18,7 @@ pub fn exec() {
 
     let mut num_increase: u16 = 0;
 
-    let mut window: VecDeque<u16> = VecDeque::from_iter([0 as u16, 0 as u16, 0 as u16]);
+    let mut window: VecDeque<u16> = VecDeque::from_iter([0, 0, 0]);
     window[0] = input_data[0];
     window[1] = input_data[1];
     window[2] = input_data[2];

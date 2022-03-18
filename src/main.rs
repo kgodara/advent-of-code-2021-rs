@@ -1,9 +1,12 @@
+#![allow(dead_code)]
 mod d1;
 mod d2;
 mod d3;
+mod d4;
 
 mod util;
 
+// #[]
 fn main() {
     /* DAY 1
         d1::p1::exec();
@@ -18,8 +21,9 @@ fn main() {
 
     /* DAY 3
         d3::p1::exec();
+        d3::p2::exec();
     */
 
-    d3::p2::exec();
+    d4::p1::exec();
 
 }
