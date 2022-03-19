@@ -18,12 +18,14 @@ fn main() {
         d2::p2::exec();
     */
 
-
     /* DAY 3
         d3::p1::exec();
         d3::p2::exec();
     */
 
-    d4::p1::exec();
+    /* DAY 4
+        d4::p1::exec();
+    */
+    d4::p2::exec();
 
 }

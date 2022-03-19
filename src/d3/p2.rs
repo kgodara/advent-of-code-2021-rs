@@ -52,7 +52,6 @@ fn gen_rating(bin_str_filter_list: &mut Vec<(String, bool)>, bit_freqs: &mut Vec
     u32::from_str_radix(&last_match.unwrap(), 2).unwrap()
 }
 
-// TODO: Impl Binary Trie Approach
 pub fn exec() {
     let src: String = file::read_file_arg();
 
