@@ -4,6 +4,7 @@ mod d2;
 mod d3;
 mod d4;
 mod d5;
+mod d6;
 
 mod util;
 
@@ -31,7 +32,13 @@ fn main() {
 
     /* DAY 5
         d5::p1::exec();
+        d5::p2::exec();
     */
-    d5::p2::exec();
+
+    /* DAY 6
+        d6::p1::exec();
+    */
+
+    d6::p1::exec();
 
 }
