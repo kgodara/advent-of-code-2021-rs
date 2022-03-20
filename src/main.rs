@@ -29,6 +29,9 @@ fn main() {
         d4::p2::exec();
     */
 
-    d5::p1::exec();
+    /* DAY 5
+        d5::p1::exec();
+    */
+    d5::p2::exec();
 
 }
