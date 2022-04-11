@@ -10,6 +10,10 @@ mod util;
 
 // #[]
 fn main() {
+
+    use std::time::Instant;
+    let now = Instant::now();
+
     /* DAY 1
         d1::p1::exec();
         d1::p2::exec();
@@ -39,6 +43,9 @@ fn main() {
         d6::p1::exec();
     */
 
-    d6::p1::exec();
+    d6::p2::exec();
+
+    let elapsed = now.elapsed();
+    println!("Elapsed: {:.2?}", elapsed);
 
 }

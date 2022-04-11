@@ -155,7 +155,7 @@ pub fn exec() {
     //     which tracks the boards marked at each cell
     // On number draw:
     //     Iterate over 3-dimensional vector (super-board of given boards) to fetch boards to be marked
-    //     Mark boards and begin search 
+    //     Mark boards and begin search
 
     let mut nums_to_draw: Vec<u32> = Vec::new();
     let mut board_num: usize = 0;
@@ -174,9 +174,6 @@ pub fn exec() {
     // vec<row> [ vec<col> [ vec<board_idx>[ is_marked ] ] ]
     let mut sol_board: Vec<Vec<Vec<bool>>> = vec![vec![vec![false; board_num]; 5]; 5];
 
-
-    let mut boards_to_mark: Vec<BoardCell>;
-
     // vec of board_idx's to check for bingo
     let mut boards_to_check: Vec<(usize, bool)> = Vec::new();
 
@@ -192,16 +189,14 @@ pub fn exec() {
         last_drawn_num = *drawn_num;
         // Find boards to be marked
         if let Some(board_hits) = cell_val_lookup.get(drawn_num) {
-            // TODO: Remove
-            boards_to_mark = board_hits.clone();
 
             // mark relevant boards and
             // identify list of rows and columns to check for matches from mark_details
-            for mark_detail in boards_to_mark.iter() {
+            for mark_detail in board_hits.iter() {
                 sol_board[mark_detail.row_idx][mark_detail.col_idx][mark_detail.board_idx] = true;
 
                 boards_to_check.push((mark_detail.board_idx, true));
-                
+
                 rows_to_check.insert(mark_detail.row_idx);
                 cols_to_check.insert(mark_detail.col_idx);
             }
@@ -215,6 +210,7 @@ pub fn exec() {
         boards_to_check.drain(..);
     }
 
+    println!("winner_board_idx: {}", winner_board_idx);
     calc_score(winner_board_idx,
         last_drawn_num,
         &sol_board,

@@ -1,18 +1,6 @@
 use crate::util::file;
 use std::collections::VecDeque;
 
-#[derive(Debug)]
-struct Line {
-    pub is_row: bool,
-
-    // idx for range which doesn't change
-    pub primary_idx: usize,
-
-    pub bound_one: usize,
-    pub bound_two: usize,
-}
-
-
 const DAYS_TO_SIMULATE: i32 = 80;
 
 pub fn exec() {
