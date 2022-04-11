@@ -5,6 +5,7 @@ mod d3;
 mod d4;
 mod d5;
 mod d6;
+mod d7;
 
 mod util;
 
@@ -41,9 +42,10 @@ fn main() {
 
     /* DAY 6
         d6::p1::exec();
+        d6::p2::exec();
     */
 
-    d6::p2::exec();
+    d7::p1::exec();
 
     let elapsed = now.elapsed();
     println!("Elapsed: {:.2?}", elapsed);
