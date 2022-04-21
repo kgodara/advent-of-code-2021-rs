@@ -21,6 +21,7 @@ pub fn exec() {
     // .round() is not correct, so solve for floor and ceil
     // then compare results
     let ideal_pos_float: f64 = (sum as f64) / (pos_list.len() as f64);
+
     let ideal_pos_floor: u64 = ideal_pos_float.floor() as u64;
     let ideal_pos_ceil: u64 = ideal_pos_float.ceil() as u64;
 
