@@ -56,9 +56,11 @@ fn main() {
 
         d11::p1::exec();
         d11::p2::exec();
+
+        d12::p1::exec();
     */
 
-    d12::p1::exec();
+    d12::p2::exec();
 
     let elapsed = now.elapsed();
     println!("Elapsed: {:.2?}", elapsed);
