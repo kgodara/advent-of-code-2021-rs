@@ -6,8 +6,6 @@ use std::{ rc::Rc, cell::RefCell };
 
 use std::fmt;
 
-const STEPS: u64 = 100;
-
 #[derive(Clone, Debug, PartialEq)]
 enum NodeType {
     Start,
@@ -37,7 +35,7 @@ pub fn exec() {
     cave_lookup.insert("start", Rc::new(RefCell::new(Cave { name: Rc::new(String::from("start")), n_type: NodeType::Start, adj_caves: vec![] })));
     cave_lookup.insert("end", Rc::new(RefCell::new(Cave { name: Rc::new(String::from("end")), n_type: NodeType::End, adj_caves: vec![] })));
 
-    // populate Octopus grid
+    // parse caves
     for line in src.lines() {
 
         let mut cave_edge = line.split('-');
@@ -86,12 +84,7 @@ pub fn exec() {
 
     let start_cave = cave_lookup.get_mut("start").unwrap();
 
-    // push all caves accessible from the start to the stack
-    for cave in start_cave.borrow().adj_caves.iter() {
-        visited_small_cave_stack.push((Rc::clone(cave), HashSet::new()));
-    }
-
-
+    visited_small_cave_stack.push((Rc::clone(start_cave), HashSet::new()));
     let mut unique_path_num: u64 = 0;
 
     // Assumption: a big cave will never be connected to another big cave (no adjacent big caves)
