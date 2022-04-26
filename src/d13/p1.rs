@@ -17,7 +17,7 @@ pub fn exec() {
     let mut sorted_x: Vec<Rc<RefCell<Point>>> = Vec::new();
     let mut sorted_y: Vec<Rc<RefCell<Point>>> = Vec::new();
 
-    let mut is_sorted: bool = false;
+    let mut _is_sorted: bool = false;
 
     // parse caves
     for line in src.lines() {
@@ -33,10 +33,10 @@ pub fn exec() {
 
         if line.contains("fold along") {
 
-            if !is_sorted { 
+            if !_is_sorted { 
                 sorted_x.sort_unstable_by(|a, b| a.borrow().x.cmp(&b.borrow().x));
                 sorted_y.sort_unstable_by(|a, b| a.borrow().y.cmp(&b.borrow().y));
-                is_sorted = true;
+                _is_sorted = true;
             }
 
             let is_x_fold: bool = line.contains("x=");
