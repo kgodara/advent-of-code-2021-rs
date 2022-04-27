@@ -31,7 +31,6 @@ impl PartialEq for DigitFreq {
     }
 }
 
-
 pub fn exec() {
     let src: String = file::read_file_arg();
 
