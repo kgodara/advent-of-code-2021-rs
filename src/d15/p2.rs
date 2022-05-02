@@ -114,7 +114,7 @@ pub fn exec() {
             .collect()
         })
         .collect();
-    
+
     // populate adjacency lists
     for row_idx in 0..grid.len() {
         for col_idx in 0..grid[0].len() {

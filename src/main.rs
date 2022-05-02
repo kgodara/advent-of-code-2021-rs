@@ -14,6 +14,7 @@ mod d12;
 mod d13;
 mod d14;
 mod d15;
+mod d16;
 
 mod util;
 
@@ -70,10 +71,12 @@ fn main() {
         d14::p2::exec();
 
         d15::p1::exec();
+        d15::p2::exec();
+
+        d16::p1::exec();
     */
 
-    d15::p2::exec();
-
+    d16::p2::exec();
 
     let elapsed = now.elapsed();
     println!("Elapsed: {:.2?}", elapsed);
