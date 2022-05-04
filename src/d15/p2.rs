@@ -6,7 +6,7 @@ use std::rc::Rc;
 
 use std::cmp::Ordering;
 
-use std::collections::{ HashMap, HashSet, BinaryHeap };
+use std::collections::{ HashSet, BinaryHeap };
 
 #[derive(Clone, Debug)]
 pub struct Node<T> {
