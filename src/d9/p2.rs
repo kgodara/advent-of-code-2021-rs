@@ -1,5 +1,3 @@
-use crate::util::file;
-
 fn find_new_basin_idx(height_grid: &[Vec<(u64, bool)>]) -> Option<(u64, u64)> {
 
     for (row_idx, height_row) in height_grid.iter().enumerate() {
@@ -13,8 +11,7 @@ fn find_new_basin_idx(height_grid: &[Vec<(u64, bool)>]) -> Option<(u64, u64)> {
     None
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     // (val, basin_checked)
     let mut height_grid: Vec<Vec<(u64, bool)>> = vec![];

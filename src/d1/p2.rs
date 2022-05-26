@@ -1,10 +1,8 @@
 use std::process;
 
 use std::collections::VecDeque;
-use crate::util::file;
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut input_data: Vec<u16> = Vec::new();
     for num_str in src.split_whitespace() {
@@ -12,7 +10,7 @@ pub fn exec() {
     }
 
     if input_data.len() < 4 {
-        println!("0");
+        println!("result: 0");
         process::exit(1);
     }
 
@@ -37,5 +35,5 @@ pub fn exec() {
         prev_sum = window.iter().sum();
     }
 
-    println!("{:?}", num_increase);
+    println!("result: {:?}", num_increase);
 }

@@ -1,4 +1,3 @@
-use crate::util::file;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
@@ -9,7 +8,7 @@ struct BoardCell {
     pub board_idx: usize,
 }
 
-fn calc_score(board_idx: usize, final_num: u32, sol_board: &[Vec<Vec<bool>>], boards: &[Vec<Vec<u32>>]) {
+fn calc_score(board_idx: usize, final_num: u32, sol_board: &[Vec<Vec<bool>>], boards: &[Vec<Vec<u32>>]) -> u64 {
     // iterate over sol_board:
     //     fetch marked status using board_idx
     //     if unmarked, fetch value from boards, add to sum
@@ -25,7 +24,7 @@ fn calc_score(board_idx: usize, final_num: u32, sol_board: &[Vec<Vec<bool>>], bo
         }
     }
 
-    println!("Score: {:?}", (sum*(final_num as u64)));
+    sum*(final_num as u64)
 
 }
 
@@ -149,8 +148,7 @@ fn check_valid_bingo(sol_board: &[Vec<Vec<bool>>],
 
 
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
     // Represent all boards in one super-board
     //     which tracks the boards marked at each cell
     // On number draw:
@@ -210,10 +208,9 @@ pub fn exec() {
         boards_to_check.drain(..);
     }
 
-    println!("winner_board_idx: {}", winner_board_idx);
-    calc_score(winner_board_idx,
+    println!("result: {}", calc_score(winner_board_idx,
         last_drawn_num,
         &sol_board,
         &boards
-    );
+    ));
 }

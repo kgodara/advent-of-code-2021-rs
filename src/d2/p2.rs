@@ -1,7 +1,4 @@
-use crate::util::file;
-
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut aim_val: i32 = 0;
 
@@ -23,5 +20,5 @@ pub fn exec() {
         }
     }
 
-    println!("horizontal_pos, depth, result: {:?}, {:?}, {:?}", forward_val, depth_val, (forward_val as i32)*depth_val);
+    println!("result: {:?}", (forward_val as i32)*depth_val);
 }

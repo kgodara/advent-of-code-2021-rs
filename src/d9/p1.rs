@@ -1,7 +1,4 @@
-use crate::util::file;
-
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut height_grid: Vec<Vec<u64>> = vec![];
 

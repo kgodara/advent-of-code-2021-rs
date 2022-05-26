@@ -1,8 +1,6 @@
-use crate::util::file;
 use std::cmp;
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut pos_list: Vec<u64> = vec![];
 
@@ -40,6 +38,6 @@ pub fn exec() {
         total_fuel_ceil += result_ceil;
     }
 
-    println!("total_fuel: {}", cmp::min(total_fuel_floor, total_fuel_ceil));
+    println!("result: {}", cmp::min(total_fuel_floor, total_fuel_ceil));
 
 }

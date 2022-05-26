@@ -1,12 +1,9 @@
-use crate::util::file;
-
 use std::collections::HashMap;
 
 const STEPS: u64 = 10;
 
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
     let mut src_lines = src.lines();
 
     let mut rule_lookup: HashMap<&str, char> = HashMap::new();

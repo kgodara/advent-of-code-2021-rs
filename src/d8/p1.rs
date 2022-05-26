@@ -1,7 +1,4 @@
-use crate::util::file;
-
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
 
     let mut data: Vec<(Vec<&str>, Vec<&str>)> = vec![];
@@ -49,7 +46,7 @@ pub fn exec() {
         }
     }
 
-    println!("{}", output_val_freq);
+    println!("result: {}", output_val_freq);
 
 
 }

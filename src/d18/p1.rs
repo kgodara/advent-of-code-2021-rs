@@ -1,5 +1,3 @@
-use crate::util::file;
-
 use std::fmt;
 
 use std::rc::Rc;
@@ -155,8 +153,7 @@ fn get_magnitude(elem: Rc<RefCell<Element>>) -> u64 {
     }
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut input_data: Vec<Rc<RefCell<Element>>> = vec![];
 

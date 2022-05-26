@@ -1,9 +1,5 @@
 // Assumption: Provided inputs provide rules to cover every possible permutation of possible characters
 
-
-
-use crate::util::file;
-
 use std::collections::HashMap;
 
 const STEPS: u64 = 40;
@@ -34,8 +30,7 @@ impl Interner {
 }
 
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
     let mut src_lines = src.lines();
 
     let mut pair_interner: Interner = Interner::default();

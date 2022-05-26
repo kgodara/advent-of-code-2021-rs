@@ -1,10 +1,8 @@
-use crate::util::file;
 use std::collections::VecDeque;
 
 const DAYS_TO_SIMULATE: i32 = 80;
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     // (timer, days_remaining)
     let mut fish_queue: VecDeque<(i32, i32)> = VecDeque::new();
@@ -47,7 +45,7 @@ pub fn exec() {
         total_fish += 1;
     }
 
-    println!("total_fish: {}", total_fish);
+    println!("result: {}", total_fish);
 
 
 }

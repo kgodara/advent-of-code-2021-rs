@@ -1,5 +1,3 @@
-use crate::util::file;
-
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -11,8 +9,7 @@ struct Point {
     y: u16,
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut sorted_x: Vec<Rc<RefCell<Point>>> = Vec::new();
     let mut sorted_y: Vec<Rc<RefCell<Point>>> = Vec::new();

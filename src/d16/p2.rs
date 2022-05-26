@@ -1,6 +1,3 @@
-
-use crate::util::file;
-
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -96,8 +93,7 @@ fn calc_packet_value(packet: &Rc<RefCell<OperatorPacket>>) -> u64 {
 }
 
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut bin_data: Vec<char> = vec![];
 

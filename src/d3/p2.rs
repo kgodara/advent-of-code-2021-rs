@@ -1,6 +1,3 @@
-use crate::util::file;
-
-
 fn gen_rating(bin_str_filter_list: &mut Vec<(String, bool)>, bit_freqs: &mut Vec<u32>, is_oxygen_rating: bool) -> u32 {
 
     let mut is_one_most_common: bool;
@@ -52,8 +49,7 @@ fn gen_rating(bin_str_filter_list: &mut Vec<(String, bool)>, bit_freqs: &mut Vec
     u32::from_str_radix(&last_match.unwrap(), 2).unwrap()
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     // left-to-right indexed bit freqs
     let mut bit_freqs: Vec<u32> = Vec::new();
@@ -84,8 +80,5 @@ pub fn exec() {
     let oxygen_gen_rating = gen_rating(&mut bin_str_filter_list.clone(), &mut bit_freqs.clone(), true);
     let co2_scrubber_rating = gen_rating(&mut bin_str_filter_list.clone(), &mut bit_freqs.clone(), false);
 
-    println!("oxygen generator rating: {:?}", oxygen_gen_rating);
-    println!("CO2 scrubber rating: {:?}", co2_scrubber_rating);
-    println!("life support rating: {:?}", (oxygen_gen_rating*co2_scrubber_rating))
-
+    println!("result: {:?}", (oxygen_gen_rating*co2_scrubber_rating))
 }

@@ -1,7 +1,6 @@
 // TODO: 1. Replace this with iterative approach
 // TODO: 2. Replace this with [0; 9] approach based on grouping counts of fish per day
 
-use crate::util::file;
 use std::collections::HashMap;
 
 const DAYS_TO_SIMULATE: i32 = 256;
@@ -43,9 +42,7 @@ fn get_spawn_count(mut days_remaining: i64, total_map: &mut HashMap<i64, i64>) -
     }
 }
 
-pub fn exec() {
-
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     // (timer, days_remaining)
     let mut fish_list: Vec<i32> = Vec::new();
@@ -62,8 +59,6 @@ pub fn exec() {
     total_fish += fish_list.len() as i64;
 
     let mut days_remaining: i64;
-
-    println!("init total_fish = {}", total_fish);
 
     for fish_timer in fish_list {
         days_remaining = DAYS_TO_SIMULATE as i64;
@@ -85,7 +80,7 @@ pub fn exec() {
 
     }
 
-    println!("total_fish: {}", total_fish);
+    println!("result: {}", total_fish);
 
 
 }

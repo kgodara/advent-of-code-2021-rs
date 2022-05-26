@@ -19,3 +19,14 @@ pub fn read_file_arg() -> String {
         }
     }
 }
+
+
+pub fn read_file(file: &str) -> String {
+    match fs::read_to_string(file) {
+        Ok(src) => src,
+        Err(err) => {
+            eprintln!("Failed to read {} [{}]", file, err);
+            process::exit(1);
+        }
+    }
+}

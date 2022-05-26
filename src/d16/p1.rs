@@ -1,6 +1,3 @@
-
-use crate::util::file;
-
 use std::rc::Rc;
 use std::cell::RefCell;
 
@@ -37,8 +34,7 @@ fn incr_parent_subpackets_read(packet_stack: &mut Vec<Rc<RefCell<OperatorPacket>
     }
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut bin_data: Vec<char> = vec![];
 

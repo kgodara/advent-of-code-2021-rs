@@ -1,4 +1,3 @@
-use crate::util::file;
 use std::collections::{ HashSet, HashMap };
 
 // used for resolving three segment_idx pairs: [1, 3], [4, 6], [2, 5]
@@ -17,8 +16,7 @@ fn resolve_pair(patterns_to_value: &[&str], pair_idx_chars: &(char, char), use_i
 }
 
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     // len 2 = 1
     // len 3 = 1

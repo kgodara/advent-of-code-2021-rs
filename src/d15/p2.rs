@@ -1,5 +1,3 @@
-use crate::util::file;
-
 use std::fmt;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -49,8 +47,7 @@ impl<T> PartialEq for Node<T> {
 
 impl<T> Eq for Node<T> {}
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
     let mut grid: Vec<Vec<Rc<RefCell<Node<u8>>>>> = Vec::new();
 
     let mut min_heap: BinaryHeap<Rc<RefCell<Node<u8>>>> = BinaryHeap::new();

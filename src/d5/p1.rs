@@ -1,4 +1,3 @@
-use crate::util::file;
 use std::cmp::max;
 
 #[derive(Debug)]
@@ -15,8 +14,7 @@ struct Line {
 
 
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut lines: Vec<Line> = Vec::new();
     let mut is_row: bool;
@@ -77,7 +75,7 @@ pub fn exec() {
         }
     }
 
-    println!("Total: {:?}", total);
+    println!("result: {:?}", total);
 
 
 }

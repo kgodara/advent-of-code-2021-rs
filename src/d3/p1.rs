@@ -2,8 +2,6 @@ use std::cmp::Ordering;
 use std::collections::BinaryHeap;
 
 use std::collections::HashMap;
-use crate::util::file;
-
 // Use a HashMap to store digit frequencies, could use a vec as well
 // Note: Handles input with different length binary numbers
 
@@ -31,8 +29,7 @@ impl PartialEq for DigitFreq {
     }
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     // left-to-right indexed digit freqs
     let mut digit_freqs: HashMap<u32, u32> = HashMap::new();
@@ -73,5 +70,5 @@ pub fn exec() {
         }
     }
 
-    println!("{:?}", gamma_rate*epsilon_rate);
+    println!("result: {:?}", gamma_rate*epsilon_rate);
 }

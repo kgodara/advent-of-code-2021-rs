@@ -1,9 +1,6 @@
-use crate::util::file;
-
 use std::collections::{ HashMap, HashSet };
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let line = src.lines().next().unwrap();
 

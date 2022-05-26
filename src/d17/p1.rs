@@ -1,6 +1,3 @@
-use crate::util::file;
-
-
 // Solution: Given a positive y initial velocity,
 // the vertical height of the probe will always reach 0 with y-velocity = -(y-initial)
 // Thus, assuming a target area with y < 0, intersection with the target area
@@ -14,8 +11,7 @@ use crate::util::file;
 // the summation of this max initial y-velocity is the result
 
 // Note: x is irrelevant since it is independent from y
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let line = src.lines().next().unwrap();
 

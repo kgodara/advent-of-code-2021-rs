@@ -1,5 +1,3 @@
-use crate::util::file;
-
 use std::{ rc::Rc, cell::RefCell };
 
 const STEPS: u64 = 2000;
@@ -45,8 +43,7 @@ struct Octopus {
     pub adj_octopi: Vec<Rc<RefCell<Octopus>>>,
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut octopi_grid: Vec<Vec<Rc<RefCell<Octopus>>>> = Vec::new();
 
@@ -143,8 +140,6 @@ pub fn exec() {
         }
 
         reset_flashed_bool(&mut octopi_grid);
-
-        println!("step_flash_num: {}", step_flash_num);
 
         if step_flash_num == 100 {
             println!("result: {}", step+1);

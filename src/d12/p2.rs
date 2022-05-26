@@ -1,5 +1,3 @@
-use crate::util::file;
-
 use std::collections::{ HashMap, HashSet };
 
 use std::{ rc::Rc, cell::RefCell };
@@ -27,8 +25,7 @@ impl fmt::Display for Cave {
     }
 }
 
-pub fn exec() {
-    let src: String = file::read_file_arg();
+pub fn exec(src: String) {
 
     let mut cave_lookup: HashMap<&str, Rc<RefCell<Cave>>> = HashMap::new();
 
