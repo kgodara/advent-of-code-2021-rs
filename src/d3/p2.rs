@@ -1,84 +1,79 @@
-fn gen_rating(bin_str_filter_list: &mut Vec<(String, bool)>, bit_freqs: &mut Vec<u32>, is_oxygen_rating: bool) -> u32 {
+
+fn gen_rating(mut bin_nums: Vec<u16>, mut bit_freqs: Vec<u32>, is_oxygen_rating: bool) -> u16 {
 
     let mut is_one_most_common: bool;
-    let mut target_bit_ch: char;
+    let mut target_bit_val: u8;
 
-    let mut num_nums: u32 = bin_str_filter_list.len() as u32;
-    let mut last_match: Option<String> = None;
+    let mut bin_num_count: u32 = bin_nums.len() as u32;
+    let mut last_match: u16 = 0;
     
     for bit_idx in 0..bit_freqs.len() {
 
-        if num_nums < 2 { break }
+        if bin_num_count < 2 { break }
 
         // Is 1 the most common or equally common value in this place?
-        is_one_most_common = (bit_freqs[bit_idx] as f64) >= ((num_nums as f64) / 2.0);
-        target_bit_ch = if (is_one_most_common && is_oxygen_rating) || ( !is_one_most_common && !is_oxygen_rating ) {
-            '1'
-        } else if (!is_one_most_common && is_oxygen_rating) || (is_one_most_common && !is_oxygen_rating) {
-            '0'
-        } else {
-            panic!();
+        is_one_most_common = (bit_freqs[bit_idx] as f64) >= ((bin_num_count as f64) / 2.0);
+
+        target_bit_val = if (is_one_most_common && is_oxygen_rating) || ( !is_one_most_common && !is_oxygen_rating ) {
+                1
+            } else if (!is_one_most_common && is_oxygen_rating) || (is_one_most_common && !is_oxygen_rating) {
+                0
+            } else {
+                panic!();
         };
 
-        // iterate over binary strings and verify if can stay
-        for bin_str_tuple in bin_str_filter_list.iter_mut().filter(|bin_tuple| { bin_tuple.1 }) {
+        bin_nums.retain(|num| {
 
-            if bin_str_tuple.0.chars().nth(bit_idx).unwrap() == target_bit_ch {
-                last_match = Some(bin_str_tuple.0.clone());
+            // num >> bit_idx: right -> left traversal
+            // num >> (bit_freqs.len()-1-bit_idx): left -> right traversal
+
+            if ((num >> (bit_freqs.len() - 1 - bit_idx)) & 1) == target_bit_val as u16 {
+                last_match = *num;
+                true
             } else {
-                // Remove number from list of remaining numbers
-                // Iterate over bits in number, and decrement relevant freqs in bit_freqs
 
-                for (freq_bit_idx, bit) in bin_str_tuple.0.chars().enumerate() {
-                    if bit == '1' {
-                        bit_freqs[freq_bit_idx] -= 1;
-                    }
+                // Iterate over bits in num, and decrement relevant freqs in bit_freqs
+                // 12-bit nums: iterate over bits right -> left
+
+                let mut freq_bit_idx = 11;
+                let mut num_decr = *num;
+
+                while num_decr > 0 {
+                    bit_freqs[freq_bit_idx] -= (num_decr & 1) as u32;
+                    num_decr >>= 1;
+                    freq_bit_idx -= 1;
                 }
-
-                bin_str_tuple.1 = false;
+                false
             }
-        }
+        });
 
-        num_nums = bin_str_filter_list.clone()
-            .into_iter()
-            .filter(|bin_tuple| { bin_tuple.1 })
-            .count() as u32;
+        bin_num_count = bin_nums.len() as u32;
 
     }
 
-    u32::from_str_radix(&last_match.unwrap(), 2).unwrap()
+    last_match
 }
 
 pub fn exec(src: String) {
 
     // left-to-right indexed bit freqs
-    let mut bit_freqs: Vec<u32> = Vec::new();
+    // 12-bit binary nums
+    let mut bit_freqs: Vec<u32> = vec![0; 12];
 
-    let mut bin_str_list: Vec<String> = Vec::new();
+    let mut bin_nums: Vec<u16> = Vec::new();
 
     for bin_str in src.lines() {
-        for (digit_idx, digit) in bin_str.chars().enumerate() {
-            if digit == '1' {
-
-                if bit_freqs.len() <= digit_idx {
-                    bit_freqs.resize(digit_idx+1, 0);
-                }
+        for (digit_idx, digit) in bin_str.bytes().enumerate() {
+            if digit == b'1' {
                 bit_freqs[digit_idx] += 1;
-
             }
         }
-
-        bin_str_list.push(String::from(bin_str));
+        bin_nums.push(u16::from_str_radix(bin_str, 2).unwrap());
     }
 
+    let oxygen_gen_rating = gen_rating(bin_nums.clone(), bit_freqs.clone(), true);
 
-    let bin_str_filter_list: Vec<(String, bool)> = bin_str_list.iter()
-        .map(|bin_str| { (String::from(bin_str), true) })
-        .collect();
+    let co2_scrubber_rating = gen_rating(bin_nums.clone(), bit_freqs.clone(), false);
 
-    
-    let oxygen_gen_rating = gen_rating(&mut bin_str_filter_list.clone(), &mut bit_freqs.clone(), true);
-    let co2_scrubber_rating = gen_rating(&mut bin_str_filter_list.clone(), &mut bit_freqs.clone(), false);
-
-    println!("result: {:?}", (oxygen_gen_rating*co2_scrubber_rating))
+    println!("result: {:?}", ((oxygen_gen_rating as u32)*(co2_scrubber_rating as u32)));
 }
