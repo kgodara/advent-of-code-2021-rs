@@ -1,39 +1,13 @@
-use std::process;
-
-use std::collections::VecDeque;
 
 pub fn exec(src: String) {
 
-    let mut input_data: Vec<u16> = Vec::new();
-    for num_str in src.split_whitespace() {
-        input_data.push(num_str.parse::<u16>().unwrap());
-    }
+    let input_data: Vec<u16> = src.split_whitespace().map(|num_str| num_str.parse::<u16>().unwrap()).collect();
 
-    if input_data.len() < 4 {
-        println!("result: 0");
-        process::exit(1);
-    }
-
-    let mut num_increase: u16 = 0;
-
-    let mut window: VecDeque<u16> = VecDeque::from_iter([0, 0, 0]);
-    window[0] = input_data[0];
-    window[1] = input_data[1];
-    window[2] = input_data[2];
-
-    let mut prev_sum: u16 = window.iter().sum();
-    
-    for (idx, num) in input_data[3..].iter().enumerate() {
-        if idx >= (input_data.len()-3) { break; }
-
-        window.pop_front();
-        window.push_back(*num);
-
-        if window.iter().sum::<u16>() > prev_sum {
-            num_increase += 1;
-        }
-        prev_sum = window.iter().sum();
-    }
-
-    println!("result: {:?}", num_increase);
+    println!("result: {}",
+        input_data.windows(3)
+            .zip(input_data[1..].windows(3))
+            .map(|(prev_window, next_window)|
+                if next_window.iter().sum::<u16>() > prev_window.iter().sum::<u16>() { 1 } else { 0 } )
+            .sum::<u16>()
+    );
 }
