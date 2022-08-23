@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+#![feature(array_windows)]
 
 use clap::Parser;
 
@@ -21,6 +22,12 @@ mod d16;
 mod d17;
 mod d18;
 mod d19;
+mod d20;
+mod d21;
+mod d22;
+mod d24;
+mod d23;
+mod d25;
 
 mod util;
 
@@ -177,6 +184,43 @@ fn main() {
                 DayPart::Two => { unimplemented!() },
             }
         },
+        20 => {
+            match part {
+                DayPart::One => { d20::p1::exec(src) },
+                DayPart::Two => { d20::p2::exec(src) },
+            }
+        },
+        21 => {
+            match part {
+                DayPart::One => { d21::p1::exec(src) },
+                DayPart::Two => { d21::p2::exec(src) },
+            }
+        },
+        22 => {
+            match part {
+                DayPart::One => { d22::p1::exec(src) },
+                DayPart::Two => { d22::p2::exec(src) },
+            }
+        },
+        23 => {
+            match part {
+                DayPart::One => { d23::p1::exec(src) },
+                DayPart::Two => { d23::p2::exec(src) },
+            }
+        }
+        24 => {
+            match part {
+                DayPart::One => { d24::p1::exec(src) },
+                DayPart::Two => { d24::p2::exec(src) },
+            }
+        }
+        25 => {
+            match part {
+                DayPart::One => { d25::p1::exec(src) },
+                DayPart::Two => { unimplemented!() },
+            }
+        }
+
         _ => {panic!("Invalid day")}
     }
 
