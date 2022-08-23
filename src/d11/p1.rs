@@ -4,28 +4,28 @@ const STEPS: u64 = 100;
 
 fn reset_flashed_bool(octopi_grid: &mut Vec<Vec<Rc<RefCell<Octopus>>>>) {
 
-    for row_idx in 0..10 {
-        for col_idx in 0..10 {
-            octopi_grid[row_idx][col_idx].borrow_mut().flashed = false;
+    for row in octopi_grid {
+        for cell in row {
+            cell.borrow_mut().flashed = false;
         }
     }
 }
 
 fn incr_all(octopi_grid: &mut Vec<Vec<Rc<RefCell<Octopus>>>>) {
 
-    for row_idx in 0..10 {
-        for col_idx in 0..10 {
-            octopi_grid[row_idx][col_idx].borrow_mut().energy += 1;
+    for row in octopi_grid {
+        for cell in row {
+            cell.borrow_mut().energy += 1;
         }
     }
 }
 
 fn get_all_to_flash(octopi_grid: &mut Vec<Vec<Rc<RefCell<Octopus>>>>) -> Vec<Rc<RefCell<Octopus>>> {
     let mut result: Vec<Rc<RefCell<Octopus>>> = Vec::new();
-    for row_idx in 0..10 {
-        for col_idx in 0..10 {
-            if octopi_grid[row_idx][col_idx].borrow().energy > 9 {
-                result.push(Rc::clone(&octopi_grid[row_idx][col_idx]));
+    for row in octopi_grid {
+        for cell in row {
+            if cell.borrow().energy > 9 {
+                result.push(Rc::clone(cell));
             }
         }
     }

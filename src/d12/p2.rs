@@ -24,6 +24,7 @@ impl fmt::Display for Cave {
         write!(f, "[{}, {:?}, adj_caves: {} ]", self.name, self.n_type, self.adj_caves.len())
     }
 }
+// TODO: Explore perf improvement
 
 pub fn exec(src: String) {
 

@@ -99,7 +99,7 @@ fn parse_board_and_nums(src: String,
 fn check_valid_bingo(sol_board: &[Vec<Vec<bool>>],
     check_rows: bool,
     seqs_to_check: &HashSet<usize>,
-    boards_to_check: &Vec<(usize, bool)>,
+    boards_to_check: &[(usize, bool)],
     winner_board_idx: &mut usize) -> bool {
     // horizontal|vertical
     // check for row|col bingos
@@ -113,11 +113,10 @@ fn check_valid_bingo(sol_board: &[Vec<Vec<bool>>],
     // check only rows|cols in (rows|cols)_to_check
     for seq_idx in seqs_to_check.iter() {
 
-        remaining_seq_boards = boards_to_check.clone();
+        remaining_seq_boards = Vec::from_iter(boards_to_check.iter().cloned());
 
         // iter over individual row/col cells
 
-        #[allow(clippy::needless_range_loop)]        
         for cell_idx in if check_rows { 0..sol_board[*seq_idx].len() } else { 0..sol_board.len() } {
 
             cell = if check_rows { &sol_board[*seq_idx][cell_idx] } else { &sol_board[cell_idx][*seq_idx] };

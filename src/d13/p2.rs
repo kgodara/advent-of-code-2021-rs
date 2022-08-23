@@ -30,7 +30,7 @@ pub fn exec(src: String) {
 
         if line.contains("fold along") {
 
-            if !is_sorted { 
+            if !is_sorted {
                 sorted_x.sort_unstable_by(|a, b| a.borrow().x.cmp(&b.borrow().x));
                 sorted_y.sort_unstable_by(|a, b| a.borrow().y.cmp(&b.borrow().y));
                 is_sorted = true;

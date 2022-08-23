@@ -13,7 +13,7 @@ fn get_spawn_count(mut days_remaining: i64, total_map: &mut HashMap<i64, i64>) -
         1
     } else {
 
-        let original_days: i64 = days_remaining.clone();
+        let original_days: i64 = days_remaining;
 
         // Memoization
         if total_map.contains_key(&days_remaining) {
