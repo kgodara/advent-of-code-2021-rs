@@ -1,5 +1,6 @@
 use std::collections::{BTreeSet, VecDeque};
 
+use std::collections::HashSet;
 use fnv::FnvHashSet;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -44,7 +45,6 @@ impl std::ops::SubAssign for Point {
     }
 }
 
-
 fn rotations_fast_vec(scanner: &[Point], k: &mut Vec<Vec<Point>>) {
     for _ in 0..24 {
         k.push(Vec::with_capacity(27));
@@ -77,6 +77,7 @@ fn rotations_fast_vec(scanner: &[Point], k: &mut Vec<Vec<Point>>) {
         k[23].push(Point { x: -s.z, y: -s.x, z: s.y });
     }
 }
+
 
 // all 24 possible rotations/permutations of the set of points for a given scanner
 fn rotations(mut s: Vec<Point>, k: &mut Vec<Vec<Point>>) {
@@ -115,9 +116,13 @@ fn rotations(mut s: Vec<Point>, k: &mut Vec<Vec<Point>>) {
     }
 }
 
-fn calc_intersect<'a>(s1: &BTreeSet<Point>, s2: &Vec<Point>, k: &'a mut Vec<Vec<Point>>) -> Option<impl Iterator<Item = Point> + 'a> {
+fn calc_intersect<'a>(
+    s1: &BTreeSet<Point>, 
+    s2: &Vec<Point>,
+    k: &'a mut Vec<Vec<Point>>)
+    -> Option<(impl Iterator<Item = Point> + 'a, Point)> {
 
-
+    // let now = std::time::Instant::now();
     k.drain(..);
 
 
@@ -126,6 +131,8 @@ fn calc_intersect<'a>(s1: &BTreeSet<Point>, s2: &Vec<Point>, k: &'a mut Vec<Vec<
         s1_set.insert(*point);
     }
     rotations_fast_vec(s2, k);
+
+    // println!("calc_intersect() init Elapsed: {:.2?}", now.elapsed());
 
     // iter over all 24 rotations of s2
     for ss2 in k.iter() {
@@ -149,11 +156,11 @@ fn calc_intersect<'a>(s1: &BTreeSet<Point>, s2: &Vec<Point>, k: &'a mut Vec<Vec<
                 }
 
                 if num_common >= 12 {
-                    return Some(ss2
+                    return Some((ss2
                         .iter()
                         .map(move |b| {
                             *b - off
-                        }));
+                        }), off));
                 }
             }
         }
@@ -183,6 +190,9 @@ pub fn exec(src: &str, print: bool) {
 
 
     let mut t: BTreeSet<Point> = BTreeSet::from_iter(scanners[0].iter().cloned());
+
+    let mut o: Vec<Point> = vec![ Point{x:0, y:0, z:0} ];
+
     let mut q: VecDeque<Vec<Point>> = VecDeque::from_iter(scanners.into_iter().skip(1));
 
     // total rotations: 24
@@ -196,7 +206,8 @@ pub fn exec(src: &str, print: bool) {
         let k = calc_intersect(&t, &q[0], &mut k);
 
         if let Some(k) = k {
-            t = t.union(&BTreeSet::from_iter(k)).cloned().collect();
+            t = t.union(&BTreeSet::from_iter(k.0)).cloned().collect();
+            o.push(k.1);
             q.pop_front();
         }
         else {
@@ -205,5 +216,13 @@ pub fn exec(src: &str, print: bool) {
         }
     }
 
-    if print { println!("result: {}", t.len()) }
+    let mut md = 0;
+
+    for a in o.iter() {
+        for b in o.iter() {
+            md = std::cmp::max(md, (a.x -b.x).abs() + (a.y-b.y).abs() + (a.z-b.z).abs());// sum(abs(x - y) for x, y in zip(a, b)));
+        }
+    }
+
+    if print { println!("result: {}", md) }
 }
