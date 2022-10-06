@@ -1,21 +1,16 @@
 use std::fmt;
-use std::cell::RefCell;
-use std::rc::Rc;
 
+use std::collections::{ BinaryHeap };
 use std::cmp::Ordering;
 
-use std::collections::{ HashSet, BinaryHeap };
-
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct Node<T> {
 
-    pub label: u64,
+    pub idx: u32,
     pub val: T,
 
     // dist from source
     pub dist: u32,
-
-    pub adj_list: Vec<Rc<RefCell<Node<T>>>>,
 }
 
 impl<T> fmt::Display for Node<T>
@@ -23,160 +18,197 @@ where
     T: fmt::Display
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{} adj_list: {} ]", self.val, self.adj_list.len())
+        write!(f, "[{} idx: ({}) ]", self.val, self.idx)
     }
 }
+// (dist, idx)
+pub struct MinHeapTuple(u32, usize);
 
-impl<T> Ord for Node<T> where T: Ord {
+impl Ord for MinHeapTuple {
     fn cmp(&self, other: &Self) -> Ordering {
-        other.dist.cmp(&self.dist)
+        other.0.cmp(&self.0)
     }
 }
 
-impl<T> PartialOrd for Node<T> where T: Ord + Eq {
+impl PartialOrd for MinHeapTuple {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(other.dist.cmp(&self.dist))
+        Some(other.0.cmp(&self.0))
     }
 }
 
-impl<T> PartialEq for Node<T> {
+impl PartialEq for MinHeapTuple {
     fn eq(&self, other: &Self) -> bool {
-        self.dist == other.dist
+        self.0 == other.0
     }
 }
 
-impl<T> Eq for Node<T> {}
+impl Eq for MinHeapTuple {}
 
-pub fn exec(src: String) {
-    let mut grid: Vec<Vec<Rc<RefCell<Node<u8>>>>> = Vec::new();
+pub fn exec(src: &str, print: bool) {
+    let mut orig_grid: Vec<Vec<Node<u8>>> = Vec::new();
 
-    let mut min_heap: BinaryHeap<Rc<RefCell<Node<u8>>>> = BinaryHeap::new();
-    let mut node_idx: u64 = 0;
+    let mut node_idx: u32 = 0;
 
     for line in src.lines() {
 
-        grid.push(line.chars().map(|ch| {
-            let new_node = Rc::new( RefCell::new( Node {
-                label: node_idx,
-                val: ch.to_digit(10).unwrap() as u8,
-                dist: u32::MAX,
-                adj_list: vec![] }
-            ));
-            node_idx += 1;
-
-            new_node
-        }).collect());
+        orig_grid.push(
+            line.bytes()
+                .map(|ch| {
+                    let new_node = Node {
+                        idx: 0,
+                        // utf-8 digit offset
+                        val: ch-48,
+                        // val: ch.to_digit(10).unwrap() as u8,
+                        dist: u32::MAX
+                    };
+                    node_idx += 1;
+                    new_node
+                })
+                .collect()
+        );
     }
 
+    let orig_row_len = orig_grid.len();
+    let orig_col_len = orig_grid[0].len();
 
     // tile grid to 5x5 square:
-    #[allow(clippy::type_complexity)]
-    let mut tiled_grid: Vec<Vec<Option<Rc<RefCell<Node<u8>>>>>> = vec![vec![None; grid[0].len()*5]; grid.len()*5];
 
-    for row_idx in 0..grid.len() {
-        for col_idx in 0..grid[0].len() {
+    let mut grid: Vec<Node<u8>> = Vec::with_capacity(250_000);
 
-            for cell_row_idx in 0..5 {
-                for cell_col_idx in 0..5 {
+    let new_row_size = orig_col_len * 5;
 
-                    let mut new_val: u8 = grid[row_idx][col_idx].borrow().val + (cell_row_idx as u8) + (cell_col_idx as u8);
+    for i in 0..(new_row_size * orig_row_len*5) {
+        // map i: tiled_grid_idx -> relevant element from orig grid
 
-                    // wrap around to 1
-                    if new_val > 9 {
-                        new_val -= 9;
-                    }
+        // tiled_grid_row_idx % orig_row_len
+        let orig_row_idx = (i / new_row_size) % orig_row_len;
 
-                    let new_node = Rc::new(
-                        RefCell::new(
-                            Node {
-                                label: node_idx,
-                                val: new_val,
-                                dist: u32::MAX,
-                                adj_list: vec![]
-                            }
-                        )
-                    );
-                    node_idx += 1;
-                    tiled_grid[row_idx+(cell_row_idx*grid.len())][col_idx+(cell_col_idx*grid[0].len())] = Some(new_node);
+        // col_idx just increments in a mod system
+        let orig_col_idx = i % orig_col_len;
 
-                }
-            }
+        let new_row_idx = i / new_row_size;
+        let new_col_idx = i % new_row_size;
+    
+        let mut new_val: u8 = orig_grid[orig_row_idx][orig_col_idx].val + 
+            ((new_row_idx / orig_row_len) as u8) + 
+            ((new_col_idx / orig_col_len) as u8);
+
+        if new_val > 9 {
+            new_val -= 9;
         }
+
+        let new_node = 
+            Node {
+                idx: i as u32,
+                val: new_val,
+                dist: u32::MAX,
+            };
+
+        node_idx += 1;
+
+        grid.push(new_node);
     }
 
-    let grid: Vec<Vec<Rc<RefCell<Node<u8>>>>> = tiled_grid.into_iter()
-        .map(|row_vec| {
-            row_vec.into_iter()
-            .map(|cell_opt| cell_opt.unwrap())
-            .collect()
-        })
-        .collect();
+    let pop_adj_arr = |
+        node: &Node<u8>,
+        orig_row_len: &usize,
+        orig_col_len: &usize,
+        adj_arr: &mut [usize; 4],
+        adj_arr_size: &mut usize| 
+    {
 
-    // populate adjacency lists
-    for row_idx in 0..grid.len() {
-        for col_idx in 0..grid[0].len() {
+        let new_row_size = orig_col_len * 5;
+        let new_row_num = orig_row_len * 5;
 
-            // left cell
-            if row_idx > 0 {
-                grid[row_idx][col_idx].borrow_mut().adj_list.push(Rc::clone(&grid[row_idx-1][col_idx]));
-            }
+        let cur_idx = node.idx as usize;
 
-            // right cell
-            if row_idx < (grid.len()-1) {
-                grid[row_idx][col_idx].borrow_mut().adj_list.push(Rc::clone(&grid[row_idx+1][col_idx]));
-            }
-
-            // top cell
-            if col_idx > 0 {
-                grid[row_idx][col_idx].borrow_mut().adj_list.push(Rc::clone(&grid[row_idx][col_idx-1]));
-            }
-
-            // bottom cell
-            if col_idx < (grid[0].len()-1) {
-                grid[row_idx][col_idx].borrow_mut().adj_list.push(Rc::clone(&grid[row_idx][col_idx+1]));
-            }
+        // top cell - not in top row:
+        if cur_idx >= new_row_size {
+            adj_arr[*adj_arr_size] = cur_idx-new_row_size;
+            *adj_arr_size += 1;
         }
-    }
+
+        // bottom cell - not in bottom row:
+        if cur_idx < ((new_row_num * new_row_size) - new_row_size) {
+            adj_arr[*adj_arr_size] = cur_idx+new_row_size;
+            *adj_arr_size += 1;
+        }
+
+        // left cell - not on left edge
+        if (cur_idx % new_row_size) != 0 {
+            adj_arr[*adj_arr_size] = cur_idx-1;
+            *adj_arr_size += 1;
+        }
+
+        // right cell - not on right edge
+        if ((cur_idx+1) % new_row_size) != 0 {
+            adj_arr[*adj_arr_size] = cur_idx+1;
+            *adj_arr_size += 1;
+        }
+    };
 
     // set start_node dist = 0
-    grid[0][0].borrow_mut().dist = 0;
+    grid[0].dist = 0;
 
-    let mut visited_nodes: HashSet<u64> = HashSet::new();
+    let mut visited_nodes: Vec<bool> = vec![false; node_idx as usize];
+
+    // (dist, idx)
+    let mut min_heap: BinaryHeap<MinHeapTuple> = BinaryHeap::new();
 
     // Djikstra's, could also use A* with Manhattan distance
     // Note: instead of reallocating the min_heap on every iter
     //     don't populate the min_heap with all nodes initially
     //     and add nodes as their distances are improved and
     //     filter out any already visited nodes
-    min_heap.push(Rc::clone(&grid[0][0]));
+    min_heap.push(MinHeapTuple(grid[0].dist, 0));
 
-    let mut cur_node: Rc<RefCell<Node<u8>>>;
+    let mut cur_tuple: MinHeapTuple;
+    let mut cur_node: &Node<u8>;
+
+    // store indexes of adjacent nodes
+    let mut cur_adj: [usize; 4] = Default::default();
+    let mut adj_arr_size: usize;
+
+    let mut adj_node: &mut Node<u8>;
 
     while !min_heap.is_empty() {
 
-        cur_node = min_heap.pop().unwrap();
+        cur_tuple = min_heap.pop().unwrap();
+        cur_node = &grid[cur_tuple.1];
 
-        if !visited_nodes.insert(cur_node.borrow().label) {
+        let idx = cur_node.idx as usize;
+
+
+        let cur_node_dist = cur_node.dist;
+
+
+        if visited_nodes[idx] {
             // already visited this node
             continue;
+        } else {
+            visited_nodes[idx] = true;
         }
 
-
-        if Rc::ptr_eq(&cur_node, &grid[grid.len()-1][grid[0].len()-1]) {
+        if *cur_node == grid[grid.len()-1] {
             break;
         }
 
-        for adj_node in cur_node.borrow().adj_list.iter() {
-            let new_dist: u32 = cur_node.borrow().dist + (adj_node.borrow().val as u32);
-            if new_dist < adj_node.borrow().dist {
-                adj_node.borrow_mut().dist = new_dist;
+        adj_arr_size = 0;
+        pop_adj_arr(cur_node, &orig_row_len, &orig_col_len, &mut cur_adj, &mut adj_arr_size);
 
-                min_heap.push(Rc::clone(adj_node));
+        for adj_node_idx in cur_adj[0..adj_arr_size].iter() {
+            adj_node = &mut grid[*adj_node_idx];
+
+            let new_dist: u32 = cur_node_dist + (adj_node.val as u32);
+            if new_dist < adj_node.dist {
+                adj_node.dist = new_dist;
+
+                min_heap.push(MinHeapTuple(adj_node.dist, *adj_node_idx));
             }
         }
     }
 
-    println!("result: {}", grid[grid.len()-1][grid[0].len()-1].borrow().dist);
+    if print { println!("result: {}", grid[grid.len()-1].dist) }
 
-    
+
 }

@@ -50,7 +50,7 @@ impl<T> PartialEq for Node<T> {
 impl<T> Eq for Node<T> {}
 
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     let mut grid: Vec<Vec<Rc<RefCell<Node<u8>>>>> = Vec::new();
 
     let mut min_heap: BinaryHeap<Rc<RefCell<Node<u8>>>> = BinaryHeap::new();
@@ -65,7 +65,7 @@ pub fn exec(src: String) {
                 dist: u32::MAX,
                 adj_list: vec![] }
             ));
-            min_heap.push(Rc::clone(&new_node));
+            // min_heap.push(Rc::clone(&new_node));
             node_idx += 1;
 
             new_node
@@ -103,7 +103,8 @@ pub fn exec(src: String) {
 
     // Djikstra's, could also use A* with Manhattan distance
     // Issue: can't modify elements in BinaryHeap in a way that correctly changes their order
-    // Temp Solution (see d15/p2.rs for better solution): Reconstruct BinaryHeap on every step
+
+    min_heap.push(Rc::clone(&grid[0][0]));
 
     let mut cur_node: Rc<RefCell<Node<u8>>>;
 
@@ -119,13 +120,13 @@ pub fn exec(src: String) {
             let new_dist: u32 = cur_node.borrow().dist + (adj_node.borrow().val as u32);
             if new_dist < adj_node.borrow().dist {
                 adj_node.borrow_mut().dist = new_dist;
+
+                min_heap.push(Rc::clone(adj_node));
             }
         }
-        // remake min_heap to order with recent modifications
-        min_heap = min_heap.into_vec().into();
     }
 
-    println!("result: {}", grid[grid.len()-1][grid[0].len()-1].borrow().dist);
+    if print { println!("result: {}", grid[grid.len()-1][grid[0].len()-1].borrow().dist) }
 
     
 }
