@@ -1,6 +1,6 @@
 
 
-pub fn exec (src: String) {
+pub fn exec(src: &str, print: bool) {
     let mut lines = src.lines();
 
     let mut p1_pos: u16 = str::parse(lines.next().unwrap().split(" starting position: ").last().unwrap()).unwrap();
@@ -31,5 +31,5 @@ pub fn exec (src: String) {
     }
 
     let result: u32 = (std::cmp::min(p1_score, p2_score) as u32) * ((roll_start_val-1) as u32);
-    println!("result: {}", result);
+    if print { println!("result: {}", result) }
 }

@@ -11,7 +11,7 @@ fn find_new_basin_idx(height_grid: &[Vec<(u64, bool)>]) -> Option<(u64, u64)> {
     None
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // (val, basin_checked)
     let mut height_grid: Vec<Vec<(u64, bool)>> = vec![];
@@ -100,5 +100,5 @@ pub fn exec(src: String) {
     basin_size_list.sort_unstable();
     basin_size_list.reverse();
 
-    println!("result: {}", basin_size_list[0] * basin_size_list[1] * basin_size_list[2]);
+    if print { println!("result: {}", basin_size_list[0] * basin_size_list[1] * basin_size_list[2]) }
 }

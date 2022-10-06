@@ -2,7 +2,7 @@ use std::collections::VecDeque;
 
 const DAYS_TO_SIMULATE: i32 = 80;
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // (timer, days_remaining)
     let mut fish_queue: VecDeque<(i32, i32)> = VecDeque::new();
@@ -45,7 +45,6 @@ pub fn exec(src: String) {
         total_fish += 1;
     }
 
-    println!("result: {}", total_fish);
-
+    if print { println!("result: {}", total_fish) }
 
 }

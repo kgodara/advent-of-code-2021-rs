@@ -5,4 +5,5 @@
 .git.bfg-report/**
 .vscode*
 **.svg
+**.sh
 **DS_Store**

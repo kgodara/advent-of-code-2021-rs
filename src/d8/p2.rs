@@ -16,7 +16,7 @@ fn resolve_pair(patterns_to_value: &[&str], pair_idx_chars: &(char, char), use_i
 }
 
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // len 2 = 1
     // len 3 = 1
@@ -240,6 +240,6 @@ pub fn exec(src: String) {
         result += display_output_sum;
     }
 
-    println!("result: {:?}", result);
+    if print { println!("result: {:?}", result) }
 
 }

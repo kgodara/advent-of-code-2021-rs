@@ -1,4 +1,4 @@
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
 
     let mut data: Vec<(Vec<&str>, Vec<&str>)> = vec![];
@@ -46,7 +46,7 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {}", output_val_freq);
+    if print { println!("result: {}", output_val_freq) }
 
 
 }

@@ -18,6 +18,7 @@ struct Cuboid {
     sub_cuboids: Vec<Cuboid>,
 }
 
+#[allow(dead_code)]
 fn print_cuboid(c: &Cuboid) {
     println!("({}, {}), ({}, {}), ({}, {})", c.x1, c.x2, c.y1, c.y2, c.z1, c.z2);
 }
@@ -36,7 +37,7 @@ fn cuboid_vol(cuboid: &Cuboid) -> u64 {
     (cuboid.z2 - cuboid.z1 + 1)) as u64
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     // general approach:
     // iterate over cuboids and off commands
     //     if cuboid, add to list of seen cuboids
@@ -280,6 +281,6 @@ pub fn exec(src: String) {
     }
 
     // println!("on_set.len(): {}", on_set.len());
-    println!("result: {}", num_on_cubes);
+    if print { println!("result: {}", num_on_cubes) }
 
 }

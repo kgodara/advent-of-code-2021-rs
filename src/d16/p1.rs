@@ -2,15 +2,18 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 
+#[allow(dead_code)]
 #[derive(Debug, Clone, PartialEq)]
 enum LengthType {
     TotalBitLength(u16),
     SubPacketNum(u16),
 }
+
+#[allow(dead_code)]
 #[derive(Debug)]
 struct OperatorPacket {
     // header
-    version: u8,
+    // version: u8,
     len_type: LengthType,
 
     start_bit_num: u64,
@@ -34,7 +37,7 @@ fn incr_parent_subpackets_read(packet_stack: &mut Vec<Rc<RefCell<OperatorPacket>
     }
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut bin_data: Vec<char> = vec![];
 
@@ -151,7 +154,7 @@ pub fn exec(src: String) {
                     packet_stack.push(Rc::new(
                         RefCell::new(
                             OperatorPacket {
-                                version,
+                                //version,
                                 len_type,
                                 start_bit_num: bits_read,
                                 subpackets_read: 0,
@@ -186,5 +189,5 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {}", version_sum);
+    if print { println!("result: {}", version_sum) }
 }

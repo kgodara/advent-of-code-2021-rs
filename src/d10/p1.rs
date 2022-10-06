@@ -1,4 +1,4 @@
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let open_chars: Vec<char> = vec!['(', '[', '{', '<'];
     let close_chars: Vec<char> = vec![')', ']', '}', '>'];
@@ -38,5 +38,5 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {}", score_sum);
+    if print { println!("result: {}", score_sum) }
 }

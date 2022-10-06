@@ -1,4 +1,4 @@
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // NOTES:
     // Use compressed version of inp region
@@ -129,13 +129,15 @@ pub fn exec(src: String) {
     
 
 
-    println!("result: {:?}", str::parse::<u64>(
-        &result
-            .iter()
-            .map(|x| x.to_string())
-            .collect::<Vec<String>>()
-            .concat()
-        ).unwrap()
-    );
+    if print { 
+        println!("result: {:?}", str::parse::<u64>(
+            &result
+                .iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<String>>()
+                .concat()
+            ).unwrap()
+        )
+    }
 
 }

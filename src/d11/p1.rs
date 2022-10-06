@@ -43,7 +43,7 @@ struct Octopus {
     pub adj_octopi: Vec<Rc<RefCell<Octopus>>>,
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut octopi_grid: Vec<Vec<Rc<RefCell<Octopus>>>> = Vec::new();
 
@@ -142,7 +142,7 @@ pub fn exec(src: String) {
     }
 
 
-    println!("result: {:?}", flash_num);
+    if print { println!("result: {:?}", flash_num) }
 
 
 }

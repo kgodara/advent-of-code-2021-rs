@@ -1,6 +1,6 @@
 use std::cmp;
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut pos_list: Vec<u64> = vec![];
 
@@ -26,6 +26,6 @@ pub fn exec(src: String) {
         total_fuel += cmp::max(pos, ideal_pos) - cmp::min(pos, ideal_pos);
     }
 
-    println!("result: {}", total_fuel);
+    if print { println!("result: {}", total_fuel) }
 
 }

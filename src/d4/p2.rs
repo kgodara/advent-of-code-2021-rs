@@ -27,7 +27,7 @@ fn calc_score(board_idx: usize, final_num: u32, sol_board: &[Vec<Vec<bool>>], bo
     sum*(final_num as u64)
 }
 
-fn parse_board_and_nums(src: String,
+fn parse_board_and_nums(src: &str,
     nums_to_draw: &mut Vec<u32>,
     board_num: &mut usize,
     boards: &mut Vec<Vec<Vec<u32>>>,
@@ -151,7 +151,7 @@ fn check_valid_bingo(sol_board: &[Vec<Vec<bool>>],
 
 
 // Assumption: Only one board will finish "last"
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     // Represent all boards in one super-board
     //     which tracks the boards marked at each cell
     // On number draw:
@@ -229,9 +229,11 @@ pub fn exec(src: String) {
         boards_to_check.drain(..);
     }
 
-    println!("result: {}", calc_score(last_winner_idx,
-        last_drawn_num,
-        &sol_board,
-        &boards
-    ));
+    if print {
+        println!("result: {}", calc_score(last_winner_idx,
+            last_drawn_num,
+            &sol_board,
+            &boards
+        ));
+    }
 }

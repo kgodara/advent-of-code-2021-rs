@@ -9,7 +9,7 @@ struct Point {
     y: u16,
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut sorted_x: Vec<Rc<RefCell<Point>>> = Vec::new();
     let mut sorted_y: Vec<Rc<RefCell<Point>>> = Vec::new();
@@ -83,12 +83,14 @@ pub fn exec(src: String) {
     for dot in sorted_x.iter() {
         out_grid[dot.borrow().y as usize][dot.borrow().x as usize] = '*';
     }
-    println!("result: ");
-    for row in out_grid.iter() {
-        for cell in row.iter() {
-            print!("{} ", cell);
+    if print {
+        println!("result: ");
+        for row in out_grid.iter() {
+            for cell in row.iter() {
+                print!("{} ", cell);
+            }
+            println!();
         }
-        println!();
     }
 
 }

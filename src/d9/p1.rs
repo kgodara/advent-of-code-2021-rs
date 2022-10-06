@@ -1,4 +1,4 @@
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut height_grid: Vec<Vec<u64>> = vec![];
 
@@ -84,7 +84,7 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {:?}", risk_level_sum);
+    if print { println!("result: {:?}", risk_level_sum) }
 
 
 

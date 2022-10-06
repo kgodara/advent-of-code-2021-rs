@@ -1,6 +1,6 @@
 use std::cmp;
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut pos_list: Vec<u64> = vec![];
 
@@ -38,6 +38,6 @@ pub fn exec(src: String) {
         total_fuel_ceil += result_ceil;
     }
 
-    println!("result: {}", cmp::min(total_fuel_floor, total_fuel_ceil));
+    if print { println!("result: {}", cmp::min(total_fuel_floor, total_fuel_ceil)) }
 
 }

@@ -3,7 +3,7 @@ use std::collections::HashMap;
 const STEPS: u64 = 10;
 
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     let mut src_lines = src.lines();
 
     let mut rule_lookup: HashMap<&str, char> = HashMap::new();
@@ -57,5 +57,5 @@ pub fn exec(src: String) {
         if *freq > max_freq { max_freq = *freq; }
     }
 
-    println!("result: {}", max_freq - min_freq);
+    if print { println!("result: {}", max_freq - min_freq) }
 }

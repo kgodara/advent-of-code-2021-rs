@@ -8,7 +8,7 @@ These solutions were written with the following goals in mind:
 
 - Familiarizing myself with writing idiomatic Rust solutions
 - Simplicity and clarity of understanding
-- Reasonable performance (min <1s per solution, <100ms for most)
+- Reasonable performance
 
 
 ## Usage:

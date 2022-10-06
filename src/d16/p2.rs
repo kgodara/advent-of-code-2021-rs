@@ -2,12 +2,14 @@ use std::rc::Rc;
 use std::cell::RefCell;
 
 
+#[allow(dead_code)]
 #[derive(Debug, Clone, PartialEq)]
 enum LengthType {
     TotalBitLength(u16),
     SubPacketNum(u16),
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Copy, Clone)]
 #[repr(u8)]
 enum OperatorType {
@@ -20,6 +22,7 @@ enum OperatorType {
     Equal = 7,
 }
 
+#[allow(dead_code)]
 #[derive(Debug)]
 struct OperatorPacket {
     // header
@@ -93,7 +96,7 @@ fn calc_packet_value(packet: &Rc<RefCell<OperatorPacket>>) -> u64 {
 }
 
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut bin_data: Vec<char> = vec![];
 
@@ -264,5 +267,5 @@ pub fn exec(src: String) {
         latest_value = calc_packet_value(&parent_packet_ref);
     }
 
-    println!("result: {}", latest_value);
+    if print { println!("result: {}", latest_value) }
 }

@@ -54,7 +54,7 @@ fn gen_rating(mut bin_nums: Vec<u16>, mut bit_freqs: Vec<u32>, is_oxygen_rating:
     last_match
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // left-to-right indexed bit freqs
     // 12-bit binary nums
@@ -75,5 +75,5 @@ pub fn exec(src: String) {
 
     let co2_scrubber_rating = gen_rating(bin_nums.clone(), bit_freqs.clone(), false);
 
-    println!("result: {:?}", ((oxygen_gen_rating as u32)*(co2_scrubber_rating as u32)));
+    if print { println!("result: {:?}", ((oxygen_gen_rating as u32)*(co2_scrubber_rating as u32))) }
 }

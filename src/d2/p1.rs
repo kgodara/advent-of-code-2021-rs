@@ -1,4 +1,4 @@
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut forward_val: i32 = 0;
     let mut depth_val: i32 = 0;
@@ -17,5 +17,5 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {:?}", forward_val * depth_val);
+    if print { println!("result: {:?}", forward_val * depth_val) }
 }

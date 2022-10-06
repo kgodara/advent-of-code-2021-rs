@@ -1,6 +1,6 @@
 use std::collections::{ HashMap, HashSet };
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let line = src.lines().next().unwrap();
 
@@ -97,5 +97,5 @@ pub fn exec(src: String) {
     // Calculate number of 1-step velocity pairs, e.g. pairs that directly move to a cell of target area in one step
     // this is equal to number of cells in target area
     distinct_y += ( ((y_range.0 - y_range.1).abs() + 1) * ((x_range.0 - x_range.1).abs() + 1) ) as u64;
-    println!("result: {}", distinct_y);
+    if print { println!("result: {}", distinct_y) }
 }

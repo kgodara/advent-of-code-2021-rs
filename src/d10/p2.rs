@@ -1,4 +1,4 @@
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let open_chars: Vec<char> = vec!['(', '[', '{', '<'];
     let close_chars: Vec<char> = vec![')', ']', '}', '>'];
@@ -50,5 +50,5 @@ pub fn exec(src: String) {
     score_list.sort_unstable();
 
     // Assumption: there is an odd number of incomplete lines
-    println!("result: {}", score_list[score_list.len()/2]);
+    if print { println!("result: {}", score_list[score_list.len()/2]) }
 }

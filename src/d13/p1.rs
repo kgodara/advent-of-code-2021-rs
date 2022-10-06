@@ -9,7 +9,7 @@ struct Point {
     y: u16,
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let mut sorted_x: Vec<Rc<RefCell<Point>>> = Vec::new();
     let mut sorted_y: Vec<Rc<RefCell<Point>>> = Vec::new();
@@ -78,7 +78,7 @@ pub fn exec(src: String) {
                 prev_dot = ( cur_dot.borrow().x, cur_dot.borrow().y );
             }
             
-            println!("result: {}", visible_dot_num);
+            if print { println!("result: {}", visible_dot_num) }
             break;
 
 

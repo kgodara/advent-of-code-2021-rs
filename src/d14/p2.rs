@@ -30,7 +30,7 @@ impl Interner {
 }
 
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     let mut src_lines = src.lines();
 
     let mut pair_interner: Interner = Interner::default();
@@ -170,5 +170,5 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {}", max_freq - min_freq);
+    if print { println!("result: {}", max_freq - min_freq) }
 }

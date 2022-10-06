@@ -42,7 +42,7 @@ fn get_spawn_count(mut days_remaining: i64, total_map: &mut HashMap<i64, i64>) -
     }
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // (timer, days_remaining)
     let mut fish_list: Vec<i32> = Vec::new();
@@ -80,7 +80,6 @@ pub fn exec(src: String) {
 
     }
 
-    println!("result: {}", total_fish);
-
+    if print { println!("result: {}", total_fish) }
 
 }

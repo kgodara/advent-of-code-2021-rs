@@ -1,5 +1,5 @@
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     // 12 bit binary numbers
     let mut digit_freqs: Vec<u32> = vec![0; 12];
@@ -31,5 +31,5 @@ pub fn exec(src: String) {
         }
     }
 
-    println!("result: {:?}", gamma_rate*epsilon_rate);
+    if print { println!("result: {:?}", gamma_rate*epsilon_rate) }
 }

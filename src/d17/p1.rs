@@ -11,7 +11,7 @@
 // the summation of this max initial y-velocity is the result
 
 // Note: x is irrelevant since it is independent from y
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
     let line = src.lines().next().unwrap();
 
@@ -22,5 +22,5 @@ pub fn exec(src: String) {
 
     let y_range: (i64, i64) = ( y_vals.next().unwrap().parse::<i64>().unwrap(), y_vals.next().unwrap().parse::<i64>().unwrap() );
 
-    println!("result: {}", (0..y_range.0.abs()).sum::<i64>());
+    if print { println!("result: {}", (0..y_range.0.abs()).sum::<i64>()) }
 }

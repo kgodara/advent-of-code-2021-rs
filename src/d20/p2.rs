@@ -16,7 +16,7 @@ fn count_light_pixels(pixels: &[Vec<bool>]) -> u64 {
     result
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     let mut lines = src.lines();
 
     // true = light, false = dark
@@ -92,5 +92,5 @@ pub fn exec(src: String) {
         image_next = vec![vec![false; GRID_EDGE_SIZE]; GRID_EDGE_SIZE];
     }
 
-    println!("result: {}\n", count_light_pixels(&image_prev));
+    if print { println!("result: {}\n", count_light_pixels(&image_prev)) }
 }

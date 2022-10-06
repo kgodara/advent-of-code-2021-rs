@@ -1,4 +1,4 @@
-// TODO: Improvement input parsing
+// TODO: Improve input parsing
 
 use std::cmp::{min, max};
 
@@ -16,6 +16,7 @@ struct Cuboid {
     z2: i32,
 }
 
+#[allow(dead_code)]
 fn print_cuboid(c: &Cuboid) {
     println!("({}, {}), ({}, {}), ({}, {})", c.x1, c.x2, c.y1, c.y2, c.z1, c.z2);
 }
@@ -33,7 +34,7 @@ fn cuboid_vol(cuboid: &Cuboid) -> i64 {
     (max(cuboid.z2 - cuboid.z1 + 1, 0) as i64)
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
     let lines = src.lines();
 
     let mut cur_state: HashMap<Cuboid, i32> = HashMap::new();
@@ -114,6 +115,6 @@ pub fn exec(src: String) {
         result += cuboid_vol(cuboid) * (*val as i64);
     }
 
-    println!("result: {}", result);
+    if print { println!("result: {}", result) }
 
 }
