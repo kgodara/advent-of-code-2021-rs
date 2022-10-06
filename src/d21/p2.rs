@@ -1,6 +1,6 @@
 
 
-pub fn exec (src: String) {
+pub fn exec(src: &str, print: bool) {
     let mut lines = src.lines();
 
     let p1_init_pos: u16 = str::parse(lines.next().unwrap().split(" starting position: ").last().unwrap()).unwrap();
@@ -23,7 +23,7 @@ pub fn exec (src: String) {
     }
 
     // there are 21 distinct scores (0, 21), indexes are directly equal to score value
-    let mut scenarios: Vec<Vec<Vec<Vec<Vec<u64>>>>> = vec![vec![vec![vec![vec![0; 2]; 21]; 21]; 10]; 10];
+    let mut scenarios: [[[[[u64; 2]; 21]; 21]; 10]; 10] = [[[[[0; 2]; 21]; 21]; 10]; 10];
 
     // starting scenario, p1 turn first
     scenarios[(p1_init_pos-1) as usize][(p2_init_pos-1) as usize][0][0][0] = 1;
@@ -98,6 +98,6 @@ pub fn exec (src: String) {
         }
     }
 
-    println!("result: {}", std::cmp::max(p1_wins, p2_wins));
+    if print { println!("result: {}", std::cmp::max(p1_wins, p2_wins)) }
 
 }
