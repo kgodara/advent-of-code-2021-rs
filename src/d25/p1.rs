@@ -2,7 +2,7 @@
 
 use std::fmt;
 
-#[derive(Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 enum Cell {
     East,
     South,
@@ -19,7 +19,7 @@ impl fmt::Display for Cell {
     }
 }
 
-fn print_grid(grid: &[Vec<Cell>]) {
+fn _print_grid(grid: &[Vec<Cell>]) {
     for row in grid.iter() {
         for cell in row.iter() {
             print!("{}", cell);
@@ -29,22 +29,23 @@ fn print_grid(grid: &[Vec<Cell>]) {
     println!();
 }
 
-pub fn exec(src: String) {
+pub fn exec(src: &str, print: bool) {
 
-    let mut grid: Vec<Vec<Cell>> = vec![];
+    // let mut grid: Vec<Vec<Cell>> = vec![];
+    let mut grid: [[Cell; 139]; 137] = [[Cell::Empty; 139]; 137];
 
-    for line in src.lines() {
-        let mut cur_row: Vec<Cell> = vec![];
+    for (line_idx, line) in src.lines().enumerate() {
+        // let mut cur_row: Vec<Cell> = vec![];
 
-        for ch in line.chars() {
-            cur_row.push(match ch {
-                'v' => {Cell::South},
-                '>' => {Cell::East},
-                '.' => {Cell::Empty},
+        for (ch_idx, ch) in line.bytes().enumerate() {
+            grid[line_idx][ch_idx] = match ch {
+                b'v' => {Cell::South},
+                b'>' => {Cell::East},
+                b'.' => {Cell::Empty},
                 _ => {panic!("invalid cell val")}
-            });
+            };
         }
-        grid.push(cur_row);
+        // grid.push(cur_row);
     }
 
     /*
@@ -142,6 +143,6 @@ pub fn exec(src: String) {
         // print_grid(&grid);
     }
 
-    println!("result: {:?}", step_count+1);    
+    if print { println!("result: {:?}", step_count+1) }   
 
 }
